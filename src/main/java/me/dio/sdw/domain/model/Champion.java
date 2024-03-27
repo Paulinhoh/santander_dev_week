@@ -1,6 +1,6 @@
 package me.dio.sdw.domain.model;
 
-public record Champions( 
+public record Champion( 
     Long id, 
     String name, 
     String role, 

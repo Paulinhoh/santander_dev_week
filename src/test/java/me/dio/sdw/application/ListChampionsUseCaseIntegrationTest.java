@@ -1,6 +1,6 @@
 package me.dio.sdw.application;
 
-import me.dio.sdw.domain.model.Champions;
+import me.dio.sdw.domain.model.Champion;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ListChampionsUseCaseIntegrationTest {
 
     @Test
     public void testListChampions() {
-        List<Champions> champions = listChampionsUseCase.findAll();
+        List<Champion> champions = listChampionsUseCase.findAll();
 
         Assertions.assertEquals(12, champions.size());
     }
