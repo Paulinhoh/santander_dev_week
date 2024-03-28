@@ -1,5 +1,6 @@
 package me.dio.sdw;
 
+import me.dio.sdw.application.AskChampionUseCase;
 import me.dio.sdw.application.ListChampionsUseCase;
 import me.dio.sdw.domain.ports.ChampionsRepository;
 
@@ -17,5 +18,10 @@ public class App {
 	@Bean
 	public ListChampionsUseCase provideListChampionsUseCase(ChampionsRepository repository) {
 		return new ListChampionsUseCase(repository); 
+	}
+
+	@Bean
+	public AskChampionUseCase provideAskChampionsUseCase(ChampionsRepository repository) {
+		return new AskChampionUseCase(repository); 
 	}
 }
