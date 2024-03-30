@@ -3,14 +3,17 @@ package me.dio.sdw.adapters.out;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import feign.FeignException;
 import feign.RequestInterceptor;
 import me.dio.sdw.domain.ports.GenerativeAiService;
 
-@FeignClient(name="openAiChatApi", url="${openai.base-url}")
+@ConditionalOnProperty(name = "generative-ai.provider", havingValue = "OPENAI", matchIfMissing = true)
+@FeignClient(name="openAiChatApi", url="${openai.base-url}", configuration = OpenAiChatService.Config.class)
 public interface OpenAiChatService extends GenerativeAiService {
 
     @PostMapping("/v1/chat/completions")
@@ -24,9 +27,15 @@ public interface OpenAiChatService extends GenerativeAiService {
             new Message("user", context)
         );
         OpenAiChatCompletionReq req = new OpenAiChatCompletionReq(model, messages);
-        OpenAiChatCompletionResp resp = chatCompletion(req);
 
-        return resp.choices().getFirst().message().content();
+        try {
+            OpenAiChatCompletionResp resp = chatCompletion(req);
+            return resp.choices().getFirst().message().content();
+        } catch (FeignException httpErrors) {
+            return "Deu ruim! Erro de comunicação com a API da OpenAi.";
+        } catch (Exception unexpectedError) {
+            return "Deu mais ruim ainda! O retorno da API da OpenAi não contem os dados esperados.";
+        }
     }
 
     public record OpenAiChatCompletionReq(String model, List<Message> messages) {}
