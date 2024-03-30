@@ -11,7 +11,7 @@ spring:
             enabled: true
 
 generative-ai:
-    provider: GEMINI
+    provider: ${GENERATIVE_API_KEY:OPENAI}
 
 openai:
     base-url: https://api.openai.com

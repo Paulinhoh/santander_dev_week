@@ -28,11 +28,13 @@ public class ChampionsJdbcRepository implements ChampionsRepository {
         );
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<Champion> findAll() {
         return jdbcTemplate.query("SELECT * FROM CHAMPIONS", championsRowMapper);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Optional<Champion> findById(Long id) {
         String sql = "SELECT * FROM CHAMPIONS WHERE ID = ?";
